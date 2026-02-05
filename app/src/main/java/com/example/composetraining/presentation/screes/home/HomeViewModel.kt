@@ -1,16 +1,14 @@
-package com.example.composetraining.presentation
+package com.example.composetraining.presentation.screes.home
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
-import com.example.composetraining.domain.repository.DatabaseRepository
 import com.example.composetraining.domain.usecases.AddDisciplineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.example.composetraining.domain.usecases.AddStudentUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase

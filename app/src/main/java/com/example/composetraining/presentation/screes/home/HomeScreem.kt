@@ -1,0 +1,110 @@
+package com.example.composetraining.presentation.screes.home
+
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.composetraining.domain.models.Discipline
+import com.example.composetraining.domain.models.Student
+import com.example.composetraining.presentation.screes.home.DataState
+import com.example.composetraining.presentation.screes.home.components.InputAlertDialog
+import com.example.composetraining.presentation.screes.home.components.StudentBox
+import com.example.composetraining.presentation.theme.ComposeTrainingTheme
+
+@Composable
+fun HomeScreen(
+    context: Context,
+    viewModel: HomeViewModel
+) {
+    ComposeTrainingTheme {
+        var showDialog by remember { mutableStateOf(false) }
+        var showDialogDiscipline by remember { mutableStateOf(false) }
+
+        val uiState = viewModel.data_state.collectAsStateWithLifecycle()
+
+        when(val state = uiState.value) {
+            is DataState.Loading -> {
+                Log.e("test", "loading")
+            }
+            is DataState.Success -> {
+                LazyColumn {
+                    items(state.student) { student ->
+                        StudentBox(student.name, student.surname)
+                    }
+                }
+            }
+            is DataState.Error -> {
+                Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(60.dp, 70.dp)
+        ) {
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    showDialog = true
+                }
+            ) {
+                Text("Добавить студента", fontSize = 20.sp)
+            }
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    showDialogDiscipline = true
+                }
+            ) {
+                Text("Добавить дисциплину", fontSize = 20.sp)
+            }
+        }
+
+        if (showDialog) {
+            InputAlertDialog(
+                title = "Добавить студента",
+                onDismiss = { showDialog = false },
+                onConfirm = { name, surname ->
+                    val student = Student(
+                        name = name,
+                        surname = surname,
+                        pass = "1234")
+                    viewModel.addStudent(student)
+                    showDialog = false
+                    viewModel.loadData()
+                }
+            )
+        }
+
+        if (showDialogDiscipline) {
+            InputAlertDialog(
+                title = "Добавить дисциплину",
+                onDismiss = { showDialogDiscipline = false },
+                onConfirm = { id, name ->
+                    val discipline = Discipline(
+                        name = name)
+                    viewModel.addDiscipline(discipline)
+                    showDialogDiscipline = false
+                }
+            )
+        }
+    }
+}
