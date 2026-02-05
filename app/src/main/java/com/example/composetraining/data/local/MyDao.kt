@@ -11,6 +11,9 @@ interface MyDao {
     @Insert
     suspend fun addStudent(studentEntity: StudentEntity)
 
+    @Insert
+    suspend fun addDiscipline(disciplineEntity: DisciplineEntity)
+
     @Query("SELECT * FROM students")
-    suspend fun getAllStudents() : List<Student>
+    suspend fun getAllStudents() : List<StudentEntity>
 }

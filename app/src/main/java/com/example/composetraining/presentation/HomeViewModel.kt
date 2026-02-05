@@ -3,8 +3,10 @@ package com.example.composetraining.presentation
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.repository.DatabaseRepository
+import com.example.composetraining.domain.usecases.AddDisciplineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val addStudentUseCase: AddStudentUseCase,
-    private val getAllStudentsUseCase: GetAllStudentsUseCase
+    private val addDisciplineUseCase: AddDisciplineUseCase,
+    private val getAllStudentsUseCase: GetAllStudentsUseCase,
 
 ) : ViewModel() {
 
@@ -45,6 +48,13 @@ class HomeViewModel @Inject constructor(
         Log.e("tests", "addStudent")
         viewModelScope.launch {
             addStudentUseCase.invoke(student)
+        }
+    }
+
+    fun addDiscipline(discipline: Discipline) {
+        Log.e("tests", "addDiscipline")
+        viewModelScope.launch {
+            addDisciplineUseCase.invoke(discipline)
         }
     }
 }

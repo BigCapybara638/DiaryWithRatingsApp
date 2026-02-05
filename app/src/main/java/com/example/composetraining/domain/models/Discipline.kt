@@ -1,4 +1,8 @@
 package com.example.composetraining.domain.models
 
-class Discipline {
-}
+import androidx.room.PrimaryKey
+
+data class Discipline(
+    val id: Long = 0,
+    val name: String,
+)

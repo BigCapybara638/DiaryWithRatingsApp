@@ -45,6 +45,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 
 @AndroidEntryPoint
@@ -68,6 +69,7 @@ fun MainScreen(
 ) {
     ComposeTrainingTheme {
         var showDialog by remember { mutableStateOf(false) }
+        var showDialogDiscipline by remember { mutableStateOf(false) }
 
         val uiState = viewModel.data_state.collectAsStateWithLifecycle()
 
@@ -100,6 +102,15 @@ fun MainScreen(
             ) {
                 Text("Добавить студента", fontSize = 20.sp)
             }
+
+            Button(
+                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    showDialogDiscipline = true
+                }
+            ) {
+                Text("Добавить дисциплину", fontSize = 20.sp)
+            }
         }
 
         if (showDialog) {
@@ -114,6 +125,19 @@ fun MainScreen(
                     viewModel.addStudent(student)
                     viewModel.loadData()
                     showDialog = false
+                }
+            )
+        }
+
+        if (showDialogDiscipline) {
+            InputAlertDialog(
+                title = "Добавить дисциплину",
+                onDismiss = { showDialogDiscipline = false },
+                onConfirm = { id, name ->
+                    val discipline = Discipline(
+                        name = name)
+                    viewModel.addDiscipline(discipline)
+                    showDialogDiscipline = false
                 }
             )
         }
