@@ -5,6 +5,7 @@ import com.example.composetraining.data.local.MyDatabase
 import com.example.composetraining.data.repository.DatabaseRepositoryImpl
 import com.example.composetraining.domain.repository.DatabaseRepository
 import com.example.composetraining.domain.usecases.AddStudentUseCase
+import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,5 +37,13 @@ object AppModule {
         repository: DatabaseRepository
     ) : AddStudentUseCase {
         return AddStudentUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetAllStudentsUseCase(
+        repository: DatabaseRepository
+    ) : GetAllStudentsUseCase {
+        return GetAllStudentsUseCase(repository)
     }
 }

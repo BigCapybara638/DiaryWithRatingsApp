@@ -7,6 +7,7 @@ interface DatabaseRepository {
 
     suspend fun addStudent(student: Student)
 
+    suspend fun getAllStudents() : List<Student>
     suspend fun getAllDisciplinesByStudent(student: Student) : List<Transaction>
 
 }

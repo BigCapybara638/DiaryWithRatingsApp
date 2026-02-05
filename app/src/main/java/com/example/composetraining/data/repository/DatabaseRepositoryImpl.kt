@@ -16,6 +16,10 @@ class DatabaseRepositoryImpl(
         dao.addStudent(student.toEntity())
     }
 
+    override suspend fun getAllStudents(): List<Student> {
+        return dao.getAllStudents()
+    }
+
     override suspend fun getAllDisciplinesByStudent(student: Student): List<Transaction> {
         return emptyList()
     }

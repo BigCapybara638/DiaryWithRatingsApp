@@ -1,5 +1,6 @@
 package com.example.composetraining.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composetraining.domain.models.Student
@@ -10,24 +11,40 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.example.composetraining.domain.usecases.AddStudentUseCase
+import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
+import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val addStudentUseCase: AddStudentUseCase
+    private val addStudentUseCase: AddStudentUseCase,
+    private val getAllStudentsUseCase: GetAllStudentsUseCase
 
 ) : ViewModel() {
 
     private val _data_state = MutableStateFlow<DataState<List<Student>>>(DataState.Loading)
     val data_state: StateFlow<DataState<List<Student>>> = _data_state
 
-    fun load_data(id: Int) {
+    init {
+        loadData()
+    }
 
+    fun loadData() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _data_state.value = DataState.Loading
+            try {
+                val result = DataState.Success(getAllStudentsUseCase.invoke())
+                _data_state.value = result
+            } catch (e: Exception) {
+                _data_state.value = DataState.Error(e.message.toString())
+            }
+        }
     }
 
     fun addStudent(student: Student) {
+        Log.e("tests", "addStudent")
         viewModelScope.launch {
-            addStudentUseCase(student)
+            addStudentUseCase.invoke(student)
         }
     }
 }

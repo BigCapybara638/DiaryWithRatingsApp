@@ -1,6 +1,9 @@
 package com.example.composetraining.presentation
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import com.example.composetraining.R
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -8,15 +11,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,14 +34,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
+import androidx.compose.ui.window.DialogProperties
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.composetraining.domain.models.Student
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -42,62 +56,136 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            GreetingPreview()
+            MainScreen(this, viewModel)
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
+fun MainScreen(
+    context: Context,
+    viewModel: HomeViewModel
+) {
     ComposeTrainingTheme {
-        val openDialog = remember { mutableStateOf(false) }
-        Column(modifier = Modifier.fillMaxSize()) {
-            StudentBox()
-            StudentBox("Legchaeva")
-            StudentBox("Petrov")
-            StudentBox("Novicov")
+        var showDialog by remember { mutableStateOf(false) }
+
+        val uiState = viewModel.data_state.collectAsStateWithLifecycle()
+
+        when(val state = uiState.value) {
+            is DataState.Loading -> {
+                Log.e("test", "loading")
+            }
+            is DataState.Success -> {
+                LazyColumn {
+                    items(state.student) { student ->
+                        StudentBox(student.name, student.surname)
+                    }
+                }
+            }
+            is DataState.Error -> {
+                Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .padding(60.dp, 70.dp)
+        ) {
+
             Button(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    openDialog.value = true
+                    showDialog = true
                 }
-            ) { Text("Добавить студента", fontSize = 20.sp)
-                if (openDialog.value) {
-                    AlertDialog(
-                        onDismissRequest = { openDialog.value = false},
-                        title = { Text(text = "Подтверждение действия") },
-                        text = { Text("Вы действительно хотите удалить выбранный элемент?") },
-                        confirmButton = {
-                            Button({ openDialog.value = false }) {
-                                Text("OK", fontSize = 22.sp)
-                            }
-                        }
-                    )
-                }
+            ) {
+                Text("Добавить студента", fontSize = 20.sp)
             }
+        }
+
+        if (showDialog) {
+            InputAlertDialog(
+                title = "Добавить студента",
+                onDismiss = { showDialog = false },
+                onConfirm = { name, surname ->
+                    val student = Student(
+                        name = name,
+                        surname = surname,
+                        pass = "1234")
+                    viewModel.addStudent(student)
+                    viewModel.loadData()
+                    showDialog = false
+                }
+            )
         }
     }
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(6.dp)
-            .border(2.dp, Color.Black)
+fun InputAlertDialog(
+    title: String,
+    initialName: String = "",
+    initialSurname: String = "",
+    onDismiss: () -> Unit,
+    onConfirm: (String, String) -> Unit
+) {
+    var name by remember { mutableStateOf(initialName) }
+    var surname by remember { mutableStateOf(initialSurname) }
 
-    ) {
-        Text(
-            text = name,
-            fontSize = 22.sp,
-            textAlign = TextAlign.Center,
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(18.dp)
-        )
-    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(text = title) },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                // Поле для имени
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it },
+                    label = { Text("Имя") },
+                    placeholder = { Text("Введите имя") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next
+                    )
+                )
+
+                // Поле для фамилии
+                OutlinedTextField(
+                    value = surname,
+                    onValueChange = { surname = it },
+                    label = { Text("Фамилия") },
+                    placeholder = { Text("Введите фамилию") },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    )
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                onClick = {
+                    onConfirm(name, surname)
+                    Log.e("tests", "textButtonTap")
+
+                          },
+                enabled = name.isNotBlank() && surname.isNotBlank()
+            ) {
+                Text("Добавить", fontWeight = FontWeight.Bold)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("Отмена")
+            }
+        }
+    )
 }
 
 @Composable
@@ -136,7 +224,5 @@ fun StudentBox(name: String = "Simon", surname: String = "Pavlov") {
 
             )
         }
-
     }
-
 }
