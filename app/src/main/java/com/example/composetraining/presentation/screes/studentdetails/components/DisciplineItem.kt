@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
 fun DisciplineItem() {
     Box(
         modifier = Modifier
-            .padding(8.dp, 2.dp)
+            .padding(8.dp, 3.dp)
             .border(1.dp, Color.Black, RoundedCornerShape(12.dp))
 
     ) {

@@ -20,6 +20,10 @@ class DatabaseRepositoryImpl(
         dao.addDiscipline(discipline.toEntity())
     }
 
+    override suspend fun getStudentById(id: Int): Student {
+        return dao.getStudentById(id.toLong()).toDomain()
+    }
+
     override suspend fun getAllStudents(): List<Student> {
         return dao.getAllStudents().map { it.toDomain() }
     }

@@ -34,35 +34,37 @@ import com.example.composetraining.presentation.screes.home.HomeScreen
 import com.example.composetraining.presentation.screes.home.HomeViewModel
 import com.example.composetraining.presentation.screes.student.StudentScreen
 import com.example.composetraining.presentation.screes.studentdetails.StudentDetailsScreen
+import com.example.composetraining.presentation.screes.studentdetails.StudentsDetailsViewModel
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by viewModels()
+    private val studentDetailsViewModel: StudentsDetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
 
-            Main(this, viewModel)
+            Main(this, homeViewModel, studentDetailsViewModel)
             // HomeScreen(this, viewModel)
         }
     }
 }
 
 @Composable
-fun Main(context: Context, viewModel: HomeViewModel) {
+fun Main(context: Context, homeViewModel: HomeViewModel, studentDetailsViewModel: StudentsDetailsViewModel) {
     val navController = rememberNavController()
     Column(Modifier.padding(8.dp)) {
         NavHost(navController, startDestination = NavRoutes.Home.route ) {
-            composable(NavRoutes.Home.route) { HomeScreen(context, viewModel, navController) }
+            composable(NavRoutes.Home.route) { HomeScreen(context, homeViewModel, navController) }
             composable(
                 "${NavRoutes.StudentDetails.route}/{itemId}",
                 arguments = listOf(navArgument("itemId") { type = NavType.IntType })
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
-                StudentDetailsScreen(itemId = itemId)
+                StudentDetailsScreen(itemId = itemId, viewModel = studentDetailsViewModel)
             }
             composable(NavRoutes.Student.route) { StudentScreen() }
         }
