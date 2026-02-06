@@ -12,6 +12,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.composetraining.R
+import com.example.composetraining.domain.models.Student
+import com.example.composetraining.domain.models.Transaction
 import com.example.composetraining.presentation.screes.studentdetails.components.DisciplineItem
+import com.example.composetraining.presentation.screes.studentdetails.components.InputDisciplineDialog
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 
 @Composable
@@ -34,7 +41,11 @@ fun StudentDetailsScreen(
     viewModel: StudentsDetailsViewModel
 ) {
     ComposeTrainingTheme {
+
+        var showDialog by remember { mutableStateOf(false) }
+
         viewModel.loadStudent(itemId!!)
+
 
         val student = viewModel.student.collectAsStateWithLifecycle()
 
@@ -71,7 +82,7 @@ fun StudentDetailsScreen(
 
             Button(
                 onClick = {
-
+                    showDialog = true
                 },
                 modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 20.dp)
             ) {
@@ -89,5 +100,23 @@ fun StudentDetailsScreen(
             DisciplineItem()
 
         }
+
+        if (showDialog) {
+            InputDisciplineDialog(
+                "Добавить/изменить оценку",
+                student.value.id.toString(),
+                onDismiss = { showDialog = false },
+                onConfirm = { student, discipline, mark ->
+                    val transaction = Transaction(
+                        student = student.toLong(),
+                        discipline = discipline.toLong(),
+                        point = mark.toInt())
+                    viewModel.addMark(transaction)
+                    showDialog = false
+                    //viewModel.loadData()
+                }
+            )
+        }
+
     }
 }

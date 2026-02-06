@@ -2,6 +2,7 @@ package com.example.composetraining.data.local
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.composetraining.domain.models.Student
 
@@ -14,6 +15,8 @@ interface MyDao {
     @Insert
     suspend fun addDiscipline(disciplineEntity: DisciplineEntity)
 
+    @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
+    suspend fun addMark(transactionsEntity: TransactionsEntity)
 
     @Query("SELECT * FROM students")
     suspend fun getAllStudents() : List<StudentEntity>

@@ -20,6 +20,10 @@ class DatabaseRepositoryImpl(
         dao.addDiscipline(discipline.toEntity())
     }
 
+    override suspend fun addTransaction(transaction: Transaction) {
+        dao.addMark(transaction.toEntity())
+    }
+
     override suspend fun getStudentById(id: Int): Student {
         return dao.getStudentById(id.toLong()).toDomain()
     }

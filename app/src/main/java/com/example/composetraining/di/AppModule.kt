@@ -5,6 +5,7 @@ import com.example.composetraining.data.local.MyDatabase
 import com.example.composetraining.data.repository.DatabaseRepositoryImpl
 import com.example.composetraining.domain.repository.DatabaseRepository
 import com.example.composetraining.domain.usecases.AddDisciplineUseCase
+import com.example.composetraining.domain.usecases.AddMarkUseCase
 import com.example.composetraining.domain.usecases.AddStudentUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
@@ -63,5 +64,13 @@ object AppModule {
         repository: DatabaseRepository
     ) : GetStudentByIdUseCase {
         return GetStudentByIdUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideAddMarkUseCase(
+        repository: DatabaseRepository
+    ) : AddMarkUseCase {
+        return AddMarkUseCase(repository)
     }
 }

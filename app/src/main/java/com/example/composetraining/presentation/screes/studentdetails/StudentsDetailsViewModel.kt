@@ -5,7 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.composetraining.domain.models.Student
+import com.example.composetraining.domain.models.Transaction
+import com.example.composetraining.domain.usecases.AddMarkUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
+import com.example.composetraining.presentation.screes.home.DataState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,12 +18,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StudentsDetailsViewModel @Inject constructor(
-    private val getStudentByIdUseCase: GetStudentByIdUseCase
+    private val getStudentByIdUseCase: GetStudentByIdUseCase,
+    private val addMarkUseCase: AddMarkUseCase
 ) : ViewModel() {
 
     private var _student = MutableStateFlow(Student(id = 1, name = "Имя", surname = "Фамилия", pass = "1234"))
     val student: StateFlow<Student> = _student
-
     fun loadStudent(id: Int) {
         viewModelScope.launch {
             try {
@@ -29,6 +32,12 @@ class StudentsDetailsViewModel @Inject constructor(
                 Log.e("loadData", e.message.toString())
             }
 
+        }
+    }
+
+    fun addMark(transaction: Transaction) {
+        viewModelScope.launch {
+            addMarkUseCase.invoke(transaction)
         }
     }
 
