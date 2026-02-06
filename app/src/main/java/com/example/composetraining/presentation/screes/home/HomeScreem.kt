@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.presentation.screes.home.DataState
@@ -30,7 +31,8 @@ import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 @Composable
 fun HomeScreen(
     context: Context,
-    viewModel: HomeViewModel
+    viewModel: HomeViewModel,
+    navController: NavHostController,
 ) {
     ComposeTrainingTheme {
         var showDialog by remember { mutableStateOf(false) }
@@ -38,21 +40,6 @@ fun HomeScreen(
 
         val uiState = viewModel.data_state.collectAsStateWithLifecycle()
 
-        when(val state = uiState.value) {
-            is DataState.Loading -> {
-                Log.e("test", "loading")
-            }
-            is DataState.Success -> {
-                LazyColumn {
-                    items(state.student) { student ->
-                        StudentBox(student.name, student.surname)
-                    }
-                }
-            }
-            is DataState.Error -> {
-                Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         Column(modifier = Modifier
             .fillMaxSize()
@@ -76,6 +63,27 @@ fun HomeScreen(
             ) {
                 Text("Добавить дисциплину", fontSize = 20.sp)
             }
+
+            when(val state = uiState.value) {
+                is DataState.Loading -> {
+                    Log.e("test", "loading")
+                }
+                is DataState.Success -> {
+                    LazyColumn {
+                        items(state.student) { student ->
+                            StudentBox(student.name,
+                                student.surname,
+                                {navController.navigate("student_details/${student.id}")
+                                }
+                            )
+                        }
+                    }
+                }
+                is DataState.Error -> {
+                    Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT).show()
+                }
+            }
+
         }
 
         if (showDialog) {

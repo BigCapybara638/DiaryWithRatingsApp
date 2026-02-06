@@ -2,6 +2,7 @@ package com.example.composetraining.presentation.screes.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.composetraining.R
 
 @Composable
-fun StudentBox(name: String = "Simon", surname: String = "Pavlov") {
+fun StudentBox(name: String = "Simon", surname: String = "Pavlov", onClick: () -> Unit) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -26,6 +27,7 @@ fun StudentBox(name: String = "Simon", surname: String = "Pavlov") {
                 .padding(8.dp)
                 .border(1.dp, Color.Black)
                 .padding(10.dp)
+                .clickable { onClick() }
 
         ) {
             Image(

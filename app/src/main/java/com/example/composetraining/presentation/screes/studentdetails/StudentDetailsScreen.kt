@@ -22,18 +22,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.composetraining.R
+import com.example.composetraining.presentation.screes.studentdetails.components.DisciplineItem
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 
-@Preview(showBackground = true)
 @Composable
 fun StudentDetailsScreen(
-    //student: Student
+    itemId: Int?
 ) {
     ComposeTrainingTheme {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxSize()
-                .padding(2.dp)
+
         ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_avatar),
@@ -42,7 +42,7 @@ fun StudentDetailsScreen(
                     .padding(10.dp, 50.dp, 10.dp, 30.dp)
                     .width(270.dp)
                     .height(270.dp)
-                    .border(2.dp, Color.Black, RoundedCornerShape(40.dp))
+                    .border(2.dp, Color.Black, RoundedCornerShape(50.dp))
             )
 
             Text(
@@ -60,7 +60,14 @@ fun StudentDetailsScreen(
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-
+            DisciplineItem()
+            DisciplineItem()
+            DisciplineItem()
+            DisciplineItem()
+            DisciplineItem()
+            DisciplineItem()
+            DisciplineItem()
+            DisciplineItem()
 
         }
     }
