@@ -17,11 +17,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.composetraining.domain.models.Transaction
 
 
-@Preview(showBackground = true, showSystemUi = true)
 @Composable
-fun DisciplineItem() {
+fun DisciplineItem(transaction: Transaction) {
     Box(
         modifier = Modifier
             .padding(8.dp, 3.dp)
@@ -33,14 +33,14 @@ fun DisciplineItem() {
             .padding(10.dp))
         {
             Text(
-                text = "Physics",
+                text = transaction.discipline.toString(),
                 fontSize = 18.sp,
                 modifier = Modifier
                     .padding(2.dp)
                     .fillMaxWidth(0.9f)
             )
 
-            val pount = 3
+            val pount = transaction.point
             val pointMod = when (pount) {
                 5 -> Modifier.clip(RoundedCornerShape(6.dp)).background(Color.Green)
                 4 -> Modifier.clip(RoundedCornerShape(6.dp)).background(Color.Green)

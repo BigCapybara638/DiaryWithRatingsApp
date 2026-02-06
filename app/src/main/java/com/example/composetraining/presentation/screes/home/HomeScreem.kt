@@ -38,7 +38,7 @@ fun HomeScreen(
         var showDialog by remember { mutableStateOf(false) }
         var showDialogDiscipline by remember { mutableStateOf(false) }
 
-        val uiState = viewModel.data_state.collectAsStateWithLifecycle()
+        val uiState = viewModel.dataState.collectAsStateWithLifecycle()
 
 
         Column(modifier = Modifier

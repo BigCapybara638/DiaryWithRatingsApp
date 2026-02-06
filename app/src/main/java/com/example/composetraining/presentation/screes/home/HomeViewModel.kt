@@ -23,8 +23,8 @@ class HomeViewModel @Inject constructor(
 
 ) : ViewModel() {
 
-    private val _data_state = MutableStateFlow<DataState<List<Student>>>(DataState.Loading)
-    val data_state: StateFlow<DataState<List<Student>>> = _data_state
+    private val _dataState = MutableStateFlow<DataState<List<Student>>>(DataState.Loading)
+    val dataState: StateFlow<DataState<List<Student>>> = _dataState
 
     init {
         loadData()
@@ -32,12 +32,12 @@ class HomeViewModel @Inject constructor(
 
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            _data_state.value = DataState.Loading
+            _dataState.value = DataState.Loading
             try {
                 val result = DataState.Success(getAllStudentsUseCase.invoke())
-                _data_state.value = result
+                _dataState.value = result
             } catch (e: Exception) {
-                _data_state.value = DataState.Error(e.message.toString())
+                _dataState.value = DataState.Error(e.message.toString())
             }
         }
     }

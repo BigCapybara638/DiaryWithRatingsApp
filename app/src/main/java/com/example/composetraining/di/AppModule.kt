@@ -8,6 +8,7 @@ import com.example.composetraining.domain.usecases.AddDisciplineUseCase
 import com.example.composetraining.domain.usecases.AddMarkUseCase
 import com.example.composetraining.domain.usecases.AddStudentUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
+import com.example.composetraining.domain.usecases.GetMarksForStudentUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
 import dagger.Module
 import dagger.Provides
@@ -73,4 +74,13 @@ object AppModule {
     ) : AddMarkUseCase {
         return AddMarkUseCase(repository)
     }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetMarksForStudentUseCase(
+        repository: DatabaseRepository
+    ) : GetMarksForStudentUseCase {
+        return GetMarksForStudentUseCase(repository)
+    }
+
 }

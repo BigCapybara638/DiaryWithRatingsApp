@@ -1,5 +1,7 @@
 package com.example.composetraining.presentation.screes.studentdetails
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -8,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -31,6 +35,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.composetraining.R
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Transaction
+import com.example.composetraining.presentation.screes.home.DataState
+import com.example.composetraining.presentation.screes.home.components.StudentBox
 import com.example.composetraining.presentation.screes.studentdetails.components.DisciplineItem
 import com.example.composetraining.presentation.screes.studentdetails.components.InputDisciplineDialog
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
@@ -45,9 +51,11 @@ fun StudentDetailsScreen(
         var showDialog by remember { mutableStateOf(false) }
 
         viewModel.loadStudent(itemId!!)
-
+        viewModel.loadMarksForStudent(itemId)
 
         val student = viewModel.student.collectAsStateWithLifecycle()
+        val uiState = viewModel.dataState.collectAsStateWithLifecycle()
+
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -90,14 +98,20 @@ fun StudentDetailsScreen(
                     fontSize = 18.sp)
             }
 
-            DisciplineItem()
-            DisciplineItem()
-            DisciplineItem()
-            DisciplineItem()
-            DisciplineItem()
-            DisciplineItem()
-            DisciplineItem()
-            DisciplineItem()
+            when(val state = uiState.value) {
+                is DataState.Loading -> {
+                    Log.e("test", "loading")
+                }
+                is DataState.Success -> {
+                    LazyColumn {
+                        items(state.student) { transactions ->
+                            DisciplineItem(transactions)
+                        }
+                    }
+                }
+                is DataState.Error -> {
+                }
+            }
 
         }
 
@@ -113,7 +127,6 @@ fun StudentDetailsScreen(
                         point = mark.toInt())
                     viewModel.addMark(transaction)
                     showDialog = false
-                    //viewModel.loadData()
                 }
             )
         }

@@ -23,4 +23,12 @@ interface MyDao {
 
     @Query("SELECT * FROM students WHERE id = :id")
     suspend fun getStudentById(id: Long) : StudentEntity
+
+    @Query("SELECT * FROM transactions t1\n" +
+            "WHERE t1.id IN (\n" +
+            "    SELECT MAX(id) FROM transactions t2\n" +
+            "    WHERE t2.studentId = :studentId\n" +
+            "    GROUP BY t2.disciplineId\n" +
+            ")")
+    suspend fun getMarksForStudent(studentId: Long) : List<TransactionsEntity>
 }
