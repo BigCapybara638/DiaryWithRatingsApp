@@ -20,14 +20,15 @@ import com.example.composetraining.R
 @Composable
 fun StudentBox(name: String = "Simon", surname: String = "Pavlov", onClick: () -> Unit) {
 
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .clickable { onClick() }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
                 .border(1.dp, Color.Black)
                 .padding(10.dp)
-                .clickable { onClick() }
 
         ) {
             Image(

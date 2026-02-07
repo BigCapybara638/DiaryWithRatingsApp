@@ -21,4 +21,6 @@ interface DatabaseRepository {
 
     suspend fun getAllDisciplinesByStudent(student: Student) : List<Transaction>
 
+    suspend fun getStudentByLoginAndPass(login: String, pass: String) : Student?
+
 }

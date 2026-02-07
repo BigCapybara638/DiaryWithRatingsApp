@@ -127,6 +127,7 @@ fun StudentDetailsScreen(
                         point = mark.toInt())
                     viewModel.addMark(transaction)
                     showDialog = false
+                    viewModel.loadMarksForStudent(student.toInt())
                 }
             )
         }

@@ -10,6 +10,7 @@ import com.example.composetraining.domain.usecases.AddStudentUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
 import com.example.composetraining.domain.usecases.GetMarksForStudentUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
+import com.example.composetraining.domain.usecases.GetVerificationUserUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -81,6 +82,14 @@ object AppModule {
         repository: DatabaseRepository
     ) : GetMarksForStudentUseCase {
         return GetMarksForStudentUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetVerificationUserUseCase(
+        repository: DatabaseRepository
+    ) : GetVerificationUserUseCase {
+        return GetVerificationUserUseCase(repository)
     }
 
 }

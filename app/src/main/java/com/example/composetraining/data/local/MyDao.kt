@@ -35,4 +35,7 @@ interface MyDao {
 
     @Query("SELECT COUNT(*) > 0 FROM discipline WHERE id = :id")
     suspend fun checkDiscipline(id: Long) : Boolean
+
+    @Query("SELECT * FROM students WHERE surname = :login AND pass = :pass LIMIT 1")
+    suspend fun getStudentByLoginAndPass(login: String, pass: String) : StudentEntity?
 }

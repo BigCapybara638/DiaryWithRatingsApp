@@ -16,7 +16,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,6 +27,7 @@ import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.presentation.screes.home.DataState
 import com.example.composetraining.presentation.screes.home.components.InputAlertDialog
+import com.example.composetraining.presentation.screes.home.components.InputDisciplineDialog
 import com.example.composetraining.presentation.screes.home.components.StudentBox
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 
@@ -40,14 +43,15 @@ fun HomeScreen(
 
         val uiState = viewModel.dataState.collectAsStateWithLifecycle()
 
-
-        Column(modifier = Modifier
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
             .fillMaxSize()
-            .padding(60.dp, 70.dp)
+            .padding(0.dp, 70.dp)
         ) {
 
             Button(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier,
                 onClick = {
                     showDialog = true
                 }
@@ -56,7 +60,7 @@ fun HomeScreen(
             }
 
             Button(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier,
                 onClick = {
                     showDialogDiscipline = true
                 }
@@ -69,11 +73,12 @@ fun HomeScreen(
                     Log.e("test", "loading")
                 }
                 is DataState.Success -> {
-                    LazyColumn {
+                    LazyColumn(modifier = Modifier.padding(0.dp, 20.dp)) {
                         items(state.student) { student ->
                             StudentBox(student.name,
                                 student.surname,
-                                {navController.navigate("student_details/${student.id}")
+                                {
+                                    navController.navigate("student_details/${student.id}")
                                 }
                             )
                         }
@@ -103,10 +108,10 @@ fun HomeScreen(
         }
 
         if (showDialogDiscipline) {
-            InputAlertDialog(
+            InputDisciplineDialog(
                 title = "Добавить дисциплину",
                 onDismiss = { showDialogDiscipline = false },
-                onConfirm = { id, name ->
+                onConfirm = { name ->
                     val discipline = Discipline(
                         name = name)
                     viewModel.addDiscipline(discipline)

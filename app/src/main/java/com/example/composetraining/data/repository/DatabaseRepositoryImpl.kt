@@ -43,4 +43,11 @@ class DatabaseRepositoryImpl(
     override suspend fun getAllDisciplinesByStudent(student: Student): List<Transaction> {
         return emptyList()
     }
+
+    override suspend fun getStudentByLoginAndPass(
+        login: String,
+        pass: String
+    ): Student? {
+        return dao.getStudentByLoginAndPass(login, pass)?.toDomain()
+    }
 }
