@@ -26,3 +26,9 @@ data class TransactionsEntity(
     val disciplineId: Long,
     val point: Int = 3
 )
+
+data class TransactionAnswer(
+    @Embedded
+    val transactionsEntity: TransactionsEntity,
+    val name: String
+)

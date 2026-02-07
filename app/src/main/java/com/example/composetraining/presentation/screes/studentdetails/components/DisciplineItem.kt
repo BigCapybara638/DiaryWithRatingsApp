@@ -17,11 +17,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.composetraining.data.local.TransactionAnswer
 import com.example.composetraining.domain.models.Transaction
 
 
 @Composable
-fun DisciplineItem(transaction: Transaction) {
+fun DisciplineItem(transactionAnswer: TransactionAnswer) {
     Box(
         modifier = Modifier
             .padding(8.dp, 3.dp)
@@ -33,14 +34,14 @@ fun DisciplineItem(transaction: Transaction) {
             .padding(10.dp))
         {
             Text(
-                text = transaction.discipline.toString(),
+                text = transactionAnswer.name,
                 fontSize = 18.sp,
                 modifier = Modifier
                     .padding(2.dp)
                     .fillMaxWidth(0.9f)
             )
 
-            val pount = transaction.point
+            val pount = transactionAnswer.transactionsEntity.point
             val pointMod = when (pount) {
                 5 -> Modifier.clip(RoundedCornerShape(6.dp)).background(Color.Green)
                 4 -> Modifier.clip(RoundedCornerShape(6.dp)).background(Color.Green)

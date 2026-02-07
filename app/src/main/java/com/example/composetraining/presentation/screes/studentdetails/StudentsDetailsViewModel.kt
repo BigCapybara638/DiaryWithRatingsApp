@@ -1,9 +1,11 @@
 package com.example.composetraining.presentation.screes.studentdetails
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.composetraining.data.local.TransactionAnswer
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Transaction
 import com.example.composetraining.domain.usecases.AddMarkUseCase
@@ -28,8 +30,8 @@ class StudentsDetailsViewModel @Inject constructor(
     private var _student = MutableStateFlow(Student(id = 1, name = "Имя", surname = "Фамилия", pass = "1234"))
     val student: StateFlow<Student> = _student
 
-    private val _dataState = MutableStateFlow<DataState<List<Transaction>>>(DataState.Loading)
-    val dataState: StateFlow<DataState<List<Transaction>>> = _dataState
+    private val _dataState = MutableStateFlow<DataState<List<TransactionAnswer>>>(DataState.Loading)
+    val dataState: StateFlow<DataState<List<TransactionAnswer>>> = _dataState
 
 
     fun loadStudent(id: Int) {

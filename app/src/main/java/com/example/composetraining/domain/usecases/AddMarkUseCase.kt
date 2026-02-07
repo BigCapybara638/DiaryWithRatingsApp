@@ -9,8 +9,8 @@ class AddMarkUseCase(
 
     suspend operator fun invoke(
         transaction: Transaction
-    ) {
-        databaseRepository.addTransaction(transaction)
+    ) : Boolean {
+        return databaseRepository.addTransaction(transaction)
     }
 
 }

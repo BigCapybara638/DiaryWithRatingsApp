@@ -1,5 +1,6 @@
 package com.example.composetraining.domain.usecases
 
+import com.example.composetraining.data.local.TransactionAnswer
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Transaction
 import com.example.composetraining.domain.repository.DatabaseRepository
@@ -10,7 +11,7 @@ class GetMarksForStudentUseCase(
 
     suspend operator fun invoke(
         id: Long
-    ) : List<Transaction> {
+    ) : List<TransactionAnswer> {
         return databaseRepository.getMarksForStudentByID(id)
     }
 

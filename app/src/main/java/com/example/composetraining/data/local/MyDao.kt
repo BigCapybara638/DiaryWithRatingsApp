@@ -24,11 +24,15 @@ interface MyDao {
     @Query("SELECT * FROM students WHERE id = :id")
     suspend fun getStudentById(id: Long) : StudentEntity
 
-    @Query("SELECT * FROM transactions t1\n" +
+    @Query("SELECT t1.*, discipline.name FROM transactions t1\n" +
+            "JOIN discipline ON discipline.id == t1.disciplineId " +
             "WHERE t1.id IN (\n" +
             "    SELECT MAX(id) FROM transactions t2\n" +
             "    WHERE t2.studentId = :studentId\n" +
             "    GROUP BY t2.disciplineId\n" +
             ")")
-    suspend fun getMarksForStudent(studentId: Long) : List<TransactionsEntity>
+    suspend fun getMarksForStudent(studentId: Long) : List<TransactionAnswer>
+
+    @Query("SELECT COUNT(*) > 0 FROM discipline WHERE id = :id")
+    suspend fun checkDiscipline(id: Long) : Boolean
 }
