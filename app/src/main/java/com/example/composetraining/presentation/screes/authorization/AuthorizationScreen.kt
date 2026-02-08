@@ -11,12 +11,17 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,11 +45,13 @@ fun AuthorizationScreen(
     viewModel: AuthorizationViewModel
 ) {
     ComposeTrainingTheme {
-        var login by remember { mutableStateOf("") }
-        var pass by remember { mutableStateOf("") }
+        val snackBarHostState = remember { SnackbarHostState() }
+        val scope = rememberCoroutineScope()
+
+        var login by rememberSaveable { mutableStateOf("") }
+        var pass by rememberSaveable { mutableStateOf("") }
 
         val authorize = viewModel.authorize.collectAsStateWithLifecycle()
-
         LaunchedEffect(authorize.value) {
             when (authorize.value) {
                 is Authorize.ADMIN -> {
@@ -52,11 +59,13 @@ fun AuthorizationScreen(
                         popUpTo(NavRoutes.Authorization.route) { inclusive = true }
                     }
                 }
+
                 is Authorize.STUDENT -> {
                     navController.navigate("${NavRoutes.Student.route}/${(authorize.value as Authorize.STUDENT<Student>).student.id}") {
                         popUpTo(NavRoutes.Authorization.route) { inclusive = true }
                     }
                 }
+
                 is Authorize.UNVERIFY -> {
                     Toast.makeText(context, "Пользователь не найден", Toast.LENGTH_SHORT).show()
                 }
@@ -65,6 +74,7 @@ fun AuthorizationScreen(
             }
             viewModel.cleanAuthorize()
         }
+
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,

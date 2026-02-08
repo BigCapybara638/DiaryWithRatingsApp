@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.composetraining.presentation.screes.Training
 import com.example.composetraining.presentation.screes.authorization.AuthorizationScreen
 import com.example.composetraining.presentation.screes.authorization.AuthorizationViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            //Training()
             Main(this, homeViewModel, studentDetailsViewModel, authorizationViewModel, studentViewModel)
         }
     }
