@@ -21,6 +21,7 @@ import com.example.composetraining.presentation.screes.authorization.Authorizati
 import com.example.composetraining.presentation.screes.authorization.AuthorizationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.composetraining.presentation.screes.home.HomeScreen
+import com.example.composetraining.presentation.screes.home.HomeStudentsScreen
 import com.example.composetraining.presentation.screes.home.HomeViewModel
 import com.example.composetraining.presentation.screes.student.StudentScreen
 import com.example.composetraining.presentation.screes.studentdetails.StudentDetailsScreen
@@ -61,6 +62,10 @@ fun Main(
             composable(NavRoutes.Home.route) {
                 HomeScreen(context, homeViewModel, navController)
             }
+            composable(NavRoutes.HomeStudents.route) {
+                HomeStudentsScreen(context, homeViewModel, navController)
+            }
+
             composable(
                 "${NavRoutes.StudentDetails.route}/{itemId}",
                 arguments = listOf(navArgument("itemId") {
@@ -87,6 +92,9 @@ fun Main(
 sealed class NavRoutes(val route: String) {
     object Authorization : NavRoutes("authorization")
     object Home : NavRoutes("home")
+    object HomeStudents : NavRoutes("home_students")
+    object HomeDiscipline : NavRoutes("home_disciplines")
+    object HomeTeachers : NavRoutes("home_teachers")
     object StudentDetails : NavRoutes("student_details")
     object Student : NavRoutes("student")
 }

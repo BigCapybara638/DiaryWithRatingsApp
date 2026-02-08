@@ -42,6 +42,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun loadDiscipline() {
+
+    }
+
     fun addStudent(student: Student) {
         Log.e("tests", "addStudent")
         viewModelScope.launch {

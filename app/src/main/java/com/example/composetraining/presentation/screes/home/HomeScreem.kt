@@ -19,12 +19,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
+import com.example.composetraining.presentation.NavRoutes
+import com.example.composetraining.presentation.screes.authorization.Authorize
 import com.example.composetraining.presentation.screes.home.DataState
 import com.example.composetraining.presentation.screes.home.components.InputAlertDialog
 import com.example.composetraining.presentation.screes.home.components.InputDisciplineDialog
@@ -38,10 +41,7 @@ fun HomeScreen(
     navController: NavHostController,
 ) {
     ComposeTrainingTheme {
-        var showDialog by remember { mutableStateOf(false) }
         var showDialogDiscipline by remember { mutableStateOf(false) }
-
-        val uiState = viewModel.dataState.collectAsStateWithLifecycle()
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -50,13 +50,22 @@ fun HomeScreen(
             .padding(0.dp, 70.dp)
         ) {
 
+            Text(
+                text = "Админ - панель",
+                textAlign = TextAlign.Center,
+                fontSize = 26.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(0.dp, 100.dp, 0.dp, 20.dp)
+            )
+
             Button(
                 modifier = Modifier,
                 onClick = {
-                    showDialog = true
+                    navController.navigate(NavRoutes.HomeStudents.route)
                 }
             ) {
-                Text("Добавить студента", fontSize = 20.sp)
+                Text("Студенты", fontSize = 20.sp)
             }
 
             Button(
@@ -65,46 +74,18 @@ fun HomeScreen(
                     showDialogDiscipline = true
                 }
             ) {
-                Text("Добавить дисциплину", fontSize = 20.sp)
+                Text("Дисциплины", fontSize = 20.sp)
             }
 
-            when(val state = uiState.value) {
-                is DataState.Loading -> {
-                    Log.e("test", "loading")
+            Button(
+                modifier = Modifier,
+                onClick = {
+                    showDialogDiscipline = true
                 }
-                is DataState.Success -> {
-                    LazyColumn(modifier = Modifier.padding(0.dp, 20.dp)) {
-                        items(state.student) { student ->
-                            StudentBox(student.name,
-                                student.surname,
-                                {
-                                    navController.navigate("student_details/${student.id}")
-                                }
-                            )
-                        }
-                    }
-                }
-                is DataState.Error -> {
-                    Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT).show()
-                }
+            ) {
+                Text("Преподаватели", fontSize = 20.sp)
             }
 
-        }
-
-        if (showDialog) {
-            InputAlertDialog(
-                title = "Добавить студента",
-                onDismiss = { showDialog = false },
-                onConfirm = { name, surname ->
-                    val student = Student(
-                        name = name,
-                        surname = surname,
-                        pass = "1234")
-                    viewModel.addStudent(student)
-                    showDialog = false
-                    viewModel.loadData()
-                }
-            )
         }
 
         if (showDialogDiscipline) {

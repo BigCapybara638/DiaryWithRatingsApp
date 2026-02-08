@@ -2,11 +2,13 @@ package com.example.composetraining.presentation.screes.authorization
 
 import android.content.Context
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -20,6 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,6 +33,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import com.example.composetraining.R
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.presentation.NavRoutes
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
@@ -72,13 +77,21 @@ fun AuthorizationScreen(
                 .fillMaxSize()
                 .padding(10.dp, 20.dp)
         ) {
+            Image(
+                painter = painterResource(id = R.mipmap.ic_launcher_foreground),
+                contentDescription = "Журнал",
+                modifier = Modifier
+                    .padding(0.dp, 120.dp, 0.dp, 30.dp)
+                    .clip(RoundedCornerShape(50.dp))
+            )
+
             Text(
                 text = "Добро пожаловать!",
                 textAlign = TextAlign.Center,
                 fontSize = 26.sp,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(0.dp, 120.dp, 0.dp, 30.dp)
+                    .padding(0.dp, 20.dp)
             )
 
             OutlinedTextField(
