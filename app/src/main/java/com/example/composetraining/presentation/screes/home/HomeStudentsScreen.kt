@@ -24,6 +24,7 @@ import androidx.navigation.NavHostController
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.presentation.screes.home.components.InputAlertDialog
 import com.example.composetraining.presentation.screes.home.components.StudentBox
+import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 
 
 @Composable
@@ -32,63 +33,67 @@ fun HomeStudentsScreen(
     viewModel: HomeViewModel,
     navController: NavHostController,
 ) {
-    val uiState = viewModel.dataState.collectAsStateWithLifecycle()
+    ComposeTrainingTheme {
+        val uiState = viewModel.dataState.collectAsStateWithLifecycle()
 
-    var showDialog by remember { mutableStateOf(false) }
+        var showDialog by remember { mutableStateOf(false) }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(0.dp, 70.dp)
-    ) {
-        Button(
-            modifier = Modifier,
-            onClick = {
-                showDialog = true
-            }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(0.dp, 70.dp)
         ) {
-            Text("Добавить студента", fontSize = 20.sp)
-        }
-
-        when (val state = uiState.value) {
-            is DataState.Loading -> {
-                Log.e("test", "loading")
+            Button(
+                modifier = Modifier,
+                onClick = {
+                    showDialog = true
+                }
+            ) {
+                Text("Добавить студента", fontSize = 20.sp)
             }
 
-            is DataState.Success -> {
-                LazyColumn(modifier = Modifier.padding(0.dp, 20.dp)) {
-                    items(state.student) { student ->
-                        StudentBox(
-                            student.name,
-                            student.surname,
-                            {
-                                navController.navigate("student_details/${student.id}")
-                            }
-                        )
+            when (val state = uiState.value) {
+                is DataState.Loading -> {
+                    Log.e("test", "loading")
+                }
+
+                is DataState.Success -> {
+                    LazyColumn(modifier = Modifier.padding(0.dp, 20.dp)) {
+                        items(state.student) { student ->
+                            StudentBox(
+                                student.name,
+                                student.surname,
+                                {
+                                    navController.navigate("student_details/${student.id}")
+                                }
+                            )
+                        }
                     }
                 }
-            }
 
-            is DataState.Error -> {
-                Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        if (showDialog) {
-            InputAlertDialog(
-                title = "Добавить студента",
-                onDismiss = { showDialog = false },
-                onConfirm = { name, surname ->
-                    val student = Student(
-                        name = name,
-                        surname = surname,
-                        pass = "1234")
-                    viewModel.addStudent(student)
-                    showDialog = false
-                    viewModel.loadData()
+                is DataState.Error -> {
+                    Toast.makeText(context, "Не удалось загрузить данные", Toast.LENGTH_SHORT)
+                        .show()
                 }
-            )
+            }
+
+            if (showDialog) {
+                InputAlertDialog(
+                    title = "Добавить студента",
+                    onDismiss = { showDialog = false },
+                    onConfirm = { name, surname ->
+                        val student = Student(
+                            name = name,
+                            surname = surname,
+                            pass = "1234"
+                        )
+                        viewModel.addStudent(student)
+                        showDialog = false
+                        viewModel.loadData()
+                    }
+                )
+            }
         }
     }
 }

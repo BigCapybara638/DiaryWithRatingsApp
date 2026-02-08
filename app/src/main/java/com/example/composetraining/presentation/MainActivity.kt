@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.composetraining.presentation.screes.authorization.AuthorizationScreen
 import com.example.composetraining.presentation.screes.authorization.AuthorizationViewModel
+import com.example.composetraining.presentation.screes.home.HomeDisciplineScreen
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.composetraining.presentation.screes.home.HomeScreen
 import com.example.composetraining.presentation.screes.home.HomeStudentsScreen
@@ -64,6 +65,9 @@ fun Main(
             }
             composable(NavRoutes.HomeStudents.route) {
                 HomeStudentsScreen(context, homeViewModel, navController)
+            }
+            composable(NavRoutes.HomeDiscipline.route) {
+                HomeDisciplineScreen(context, homeViewModel, navController)
             }
 
             composable(

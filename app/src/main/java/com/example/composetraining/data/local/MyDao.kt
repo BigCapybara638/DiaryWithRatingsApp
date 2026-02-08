@@ -21,6 +21,9 @@ interface MyDao {
     @Query("SELECT * FROM students")
     suspend fun getAllStudents() : List<StudentEntity>
 
+    @Query("SELECT * FROM discipline")
+    suspend fun getAllDisciplines() : List<DisciplineEntity>
+
     @Query("SELECT * FROM students WHERE id = :id")
     suspend fun getStudentById(id: Long) : StudentEntity
 

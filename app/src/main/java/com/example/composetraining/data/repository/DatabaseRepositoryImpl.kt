@@ -36,6 +36,10 @@ class DatabaseRepositoryImpl(
         return dao.getAllStudents().map { it.toDomain() }
     }
 
+    override suspend fun getAllDisciplines(): List<Discipline> {
+        return dao.getAllDisciplines().map {it.toDomain()}
+    }
+
     override suspend fun getMarksForStudentByID(id: Long): List<TransactionAnswer> {
         return dao.getMarksForStudent(id)
     }

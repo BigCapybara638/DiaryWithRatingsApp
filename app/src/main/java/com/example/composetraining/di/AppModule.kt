@@ -7,6 +7,7 @@ import com.example.composetraining.domain.repository.DatabaseRepository
 import com.example.composetraining.domain.usecases.AddDisciplineUseCase
 import com.example.composetraining.domain.usecases.AddMarkUseCase
 import com.example.composetraining.domain.usecases.AddStudentUseCase
+import com.example.composetraining.domain.usecases.GetAllDisciplinesUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
 import com.example.composetraining.domain.usecases.GetMarksForStudentUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
@@ -46,6 +47,14 @@ object AppModule {
 
     @Provides
     @ViewModelScoped
+    fun provideAddDisciplineUseCase(
+        repository: DatabaseRepository
+    ) : AddDisciplineUseCase {
+        return AddDisciplineUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
     fun provideGetAllStudentsUseCase(
         repository: DatabaseRepository
     ) : GetAllStudentsUseCase {
@@ -54,10 +63,10 @@ object AppModule {
 
     @Provides
     @ViewModelScoped
-    fun provideAddDisciplineUseCase(
+    fun provideGetAllDisciplinesUseCase(
         repository: DatabaseRepository
-    ) : AddDisciplineUseCase {
-        return AddDisciplineUseCase(repository)
+    ) : GetAllDisciplinesUseCase {
+        return GetAllDisciplinesUseCase(repository)
     }
 
     @Provides

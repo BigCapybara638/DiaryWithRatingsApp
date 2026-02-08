@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.composetraining.domain.usecases.AddStudentUseCase
+import com.example.composetraining.domain.usecases.GetAllDisciplinesUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
@@ -20,14 +21,18 @@ class HomeViewModel @Inject constructor(
     private val addStudentUseCase: AddStudentUseCase,
     private val addDisciplineUseCase: AddDisciplineUseCase,
     private val getAllStudentsUseCase: GetAllStudentsUseCase,
-
+    private val getAllDisciplinesUseCase: GetAllDisciplinesUseCase
 ) : ViewModel() {
 
     private val _dataState = MutableStateFlow<DataState<List<Student>>>(DataState.Loading)
     val dataState: StateFlow<DataState<List<Student>>> = _dataState
 
+    private val _dataDisciplinesState = MutableStateFlow<DataState<List<Discipline>>>(DataState.Loading)
+    val dataDisciplinesState: StateFlow<DataState<List<Discipline>>> = _dataDisciplinesState
+
     init {
         loadData()
+        loadDiscipline()
     }
 
     fun loadData() {
@@ -43,7 +48,15 @@ class HomeViewModel @Inject constructor(
     }
 
     fun loadDiscipline() {
-
+        viewModelScope.launch(Dispatchers.IO) {
+            _dataDisciplinesState.value = DataState.Loading
+            try {
+                val result = DataState.Success(getAllDisciplinesUseCase.invoke())
+                _dataDisciplinesState.value = result
+            } catch (e: Exception) {
+                _dataDisciplinesState.value = DataState.Error(e.message.toString())
+            }
+        }
     }
 
     fun addStudent(student: Student) {

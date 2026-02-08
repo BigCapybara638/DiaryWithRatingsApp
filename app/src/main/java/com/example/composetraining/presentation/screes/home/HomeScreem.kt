@@ -41,7 +41,6 @@ fun HomeScreen(
     navController: NavHostController,
 ) {
     ComposeTrainingTheme {
-        var showDialogDiscipline by remember { mutableStateOf(false) }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,7 +70,7 @@ fun HomeScreen(
             Button(
                 modifier = Modifier,
                 onClick = {
-                    showDialogDiscipline = true
+                    navController.navigate(NavRoutes.HomeDiscipline.route)
                 }
             ) {
                 Text("Дисциплины", fontSize = 20.sp)
@@ -80,25 +79,12 @@ fun HomeScreen(
             Button(
                 modifier = Modifier,
                 onClick = {
-                    showDialogDiscipline = true
+
                 }
             ) {
                 Text("Преподаватели", fontSize = 20.sp)
             }
 
-        }
-
-        if (showDialogDiscipline) {
-            InputDisciplineDialog(
-                title = "Добавить дисциплину",
-                onDismiss = { showDialogDiscipline = false },
-                onConfirm = { name ->
-                    val discipline = Discipline(
-                        name = name)
-                    viewModel.addDiscipline(discipline)
-                    showDialogDiscipline = false
-                }
-            )
         }
     }
 }
