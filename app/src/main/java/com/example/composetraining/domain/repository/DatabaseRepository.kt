@@ -4,6 +4,7 @@ import com.example.composetraining.data.local.DisciplineEntity
 import com.example.composetraining.data.local.TransactionAnswer
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
+import com.example.composetraining.domain.models.Teacher
 import com.example.composetraining.domain.models.Transaction
 
 interface DatabaseRepository {
@@ -14,11 +15,15 @@ interface DatabaseRepository {
 
     suspend fun addTransaction(transaction: Transaction) : Boolean
 
+    suspend fun addTeacher(teacher: Teacher)
+
     suspend fun getStudentById(id: Int) : Student
 
     suspend fun getAllStudents() : List<Student>
 
     suspend fun getAllDisciplines() : List<Discipline>
+
+    suspend fun getAllTeachers() : List<Teacher>
 
     suspend fun getMarksForStudentByID(id: Long) : List<TransactionAnswer>
 

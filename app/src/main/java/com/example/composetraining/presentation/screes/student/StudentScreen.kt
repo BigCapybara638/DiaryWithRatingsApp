@@ -29,8 +29,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.composetraining.R
 import com.example.composetraining.domain.models.Transaction
+import com.example.composetraining.presentation.NavRoutes
 import com.example.composetraining.presentation.screes.home.DataState
 import com.example.composetraining.presentation.screes.studentdetails.StudentsDetailsViewModel
 import com.example.composetraining.presentation.screes.studentdetails.components.DisciplineItem
@@ -40,7 +43,8 @@ import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 @Composable
 fun StudentScreen(
     itemId: Int?,
-    viewModel: StudentViewModel
+    viewModel: StudentViewModel,
+    navController: NavHostController
 ) {
     ComposeTrainingTheme {
         viewModel.loadStudent(itemId!!)
@@ -77,8 +81,18 @@ fun StudentScreen(
                 fontSize = 22.sp,
                 fontStyle = FontStyle.Italic,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth().padding(0.dp, 0.dp, 0.dp, 20.dp)
+                modifier = Modifier.fillMaxWidth().padding(0.dp, 0.dp, 0.dp, 10.dp)
             )
+
+            Button(
+                onClick = {
+                    navController.navigate(NavRoutes.Authorization.route) {
+                        popUpTo(NavRoutes.Authorization.route) { inclusive = true }
+                    }
+                }
+            ) {
+                Text("Выйти")
+            }
 
             when(val state = uiState.value) {
                 is DataState.Loading -> {

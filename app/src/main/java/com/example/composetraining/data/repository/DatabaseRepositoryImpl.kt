@@ -8,6 +8,7 @@ import com.example.composetraining.data.local.TransactionAnswer
 import com.example.composetraining.data.mappers.toDomain
 import com.example.composetraining.data.mappers.toEntity
 import com.example.composetraining.domain.models.Discipline
+import com.example.composetraining.domain.models.Teacher
 
 class DatabaseRepositoryImpl(
     private val dao: MyDao
@@ -28,6 +29,10 @@ class DatabaseRepositoryImpl(
         } else return false
     }
 
+    override suspend fun addTeacher(teacher: Teacher) {
+        dao.addTeacher(teacher.toEntity())
+    }
+
     override suspend fun getStudentById(id: Int): Student {
         return dao.getStudentById(id.toLong()).toDomain()
     }
@@ -38,6 +43,10 @@ class DatabaseRepositoryImpl(
 
     override suspend fun getAllDisciplines(): List<Discipline> {
         return dao.getAllDisciplines().map {it.toDomain()}
+    }
+
+    override suspend fun getAllTeachers(): List<Teacher> {
+        return dao.getAllTeachers().map {it.toDomain()}
     }
 
     override suspend fun getMarksForStudentByID(id: Long): List<TransactionAnswer> {

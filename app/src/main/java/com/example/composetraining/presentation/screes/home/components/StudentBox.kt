@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,13 +23,13 @@ fun StudentBox(name: String = "Simon", surname: String = "Pavlov", onClick: () -
 
     Column(modifier = Modifier
         .fillMaxWidth()
+        .padding(4.dp)
         .clickable { onClick() }) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .border(1.dp, Color.Black, RoundedCornerShape(12.dp))
                 .padding(8.dp)
-                .border(1.dp, Color.Black)
-                .padding(10.dp)
 
         ) {
             Image(

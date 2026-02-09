@@ -18,11 +18,17 @@ interface MyDao {
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addMark(transactionsEntity: TransactionsEntity)
 
+    @Insert
+    suspend fun addTeacher(teacherEntity: TeacherEntity)
+
     @Query("SELECT * FROM students")
     suspend fun getAllStudents() : List<StudentEntity>
 
     @Query("SELECT * FROM discipline")
     suspend fun getAllDisciplines() : List<DisciplineEntity>
+
+    @Query("SELECT * FROM teachers")
+    suspend fun getAllTeachers() : List<TeacherEntity>
 
     @Query("SELECT * FROM students WHERE id = :id")
     suspend fun getStudentById(id: Long) : StudentEntity

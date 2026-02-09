@@ -5,14 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
+import com.example.composetraining.domain.models.Teacher
 import com.example.composetraining.domain.usecases.AddDisciplineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.example.composetraining.domain.usecases.AddStudentUseCase
+import com.example.composetraining.domain.usecases.AddTeacherUseCase
 import com.example.composetraining.domain.usecases.GetAllDisciplinesUseCase
 import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
+import com.example.composetraining.domain.usecases.GetAllTeachersUseCase
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 
@@ -20,8 +23,10 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val addStudentUseCase: AddStudentUseCase,
     private val addDisciplineUseCase: AddDisciplineUseCase,
+    private val addTeacherUseCase: AddTeacherUseCase,
     private val getAllStudentsUseCase: GetAllStudentsUseCase,
-    private val getAllDisciplinesUseCase: GetAllDisciplinesUseCase
+    private val getAllDisciplinesUseCase: GetAllDisciplinesUseCase,
+    private val getAllTeachersUseCase: GetAllTeachersUseCase,
 ) : ViewModel() {
 
     private val _dataState = MutableStateFlow<DataState<List<Student>>>(DataState.Loading)
@@ -30,9 +35,14 @@ class HomeViewModel @Inject constructor(
     private val _dataDisciplinesState = MutableStateFlow<DataState<List<Discipline>>>(DataState.Loading)
     val dataDisciplinesState: StateFlow<DataState<List<Discipline>>> = _dataDisciplinesState
 
+    private val _dataTeachersState = MutableStateFlow<DataState<List<Teacher>>>(DataState.Loading)
+    val dataTeachersState: StateFlow<DataState<List<Teacher>>> = _dataTeachersState
+
+
     init {
         loadData()
         loadDiscipline()
+        loadTeachers()
     }
 
     fun loadData() {
@@ -59,6 +69,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun loadTeachers() {
+        viewModelScope.launch(Dispatchers.IO) {
+            _dataTeachersState.value = DataState.Loading
+            try {
+                val result = DataState.Success(getAllTeachersUseCase.invoke())
+                _dataTeachersState.value = result
+            } catch (e: Exception) {
+                _dataTeachersState.value = DataState.Error(e.message.toString())
+            }
+        }
+    }
+
     fun addStudent(student: Student) {
         Log.e("tests", "addStudent")
         viewModelScope.launch {
@@ -70,6 +92,13 @@ class HomeViewModel @Inject constructor(
         Log.e("tests", "addDiscipline")
         viewModelScope.launch {
             addDisciplineUseCase.invoke(discipline)
+        }
+    }
+
+    fun addTeacher(teacher: Teacher) {
+        Log.e("tests", "addDiscipline")
+        viewModelScope.launch {
+            addTeacherUseCase.invoke(teacher)
         }
     }
 }

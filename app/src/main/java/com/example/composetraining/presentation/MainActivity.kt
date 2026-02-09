@@ -23,6 +23,7 @@ import com.example.composetraining.presentation.screes.home.HomeDisciplineScreen
 import dagger.hilt.android.AndroidEntryPoint
 import com.example.composetraining.presentation.screes.home.HomeScreen
 import com.example.composetraining.presentation.screes.home.HomeStudentsScreen
+import com.example.composetraining.presentation.screes.home.HomeTeachersScreen
 import com.example.composetraining.presentation.screes.home.HomeViewModel
 import com.example.composetraining.presentation.screes.student.StudentScreen
 import com.example.composetraining.presentation.screes.studentdetails.StudentDetailsScreen
@@ -69,6 +70,9 @@ fun Main(
             composable(NavRoutes.HomeDiscipline.route) {
                 HomeDisciplineScreen(context, homeViewModel, navController)
             }
+            composable(NavRoutes.HomeTeachers.route) {
+                HomeTeachersScreen(context, homeViewModel, navController)
+            }
 
             composable(
                 "${NavRoutes.StudentDetails.route}/{itemId}",
@@ -85,9 +89,10 @@ fun Main(
             composable("${NavRoutes.Student.route}/{itemId}",
                 arguments = listOf(navArgument("itemId") {
                     type = NavType.IntType
-                })) { backStackEntry ->
+                })
+            ) { backStackEntry ->
                     val itemId = backStackEntry.arguments?.getInt("itemId")
-                    StudentScreen(itemId, studentViewModel)
+                    StudentScreen(itemId, studentViewModel, navController)
             }
         }
     }

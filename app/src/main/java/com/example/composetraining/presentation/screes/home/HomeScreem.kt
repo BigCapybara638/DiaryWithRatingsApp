@@ -41,7 +41,6 @@ fun HomeScreen(
     navController: NavHostController,
 ) {
     ComposeTrainingTheme {
-
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -79,10 +78,21 @@ fun HomeScreen(
             Button(
                 modifier = Modifier,
                 onClick = {
-
+                    navController.navigate(NavRoutes.HomeTeachers.route)
                 }
             ) {
                 Text("Преподаватели", fontSize = 20.sp)
+            }
+
+            Button(
+                modifier = Modifier.padding(0.dp, 20.dp),
+                onClick = {
+                    navController.navigate(NavRoutes.Authorization.route) {
+                        popUpTo(NavRoutes.Authorization.route) { inclusive = true }
+                    }
+                }
+            ) {
+                Text("Выйти")
             }
 
         }
