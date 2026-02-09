@@ -5,4 +5,5 @@ data class Student(
     val name: String,
     val surname: String,
     val pass: String,
+    val lastUpdatePass: Int = 0,
 )

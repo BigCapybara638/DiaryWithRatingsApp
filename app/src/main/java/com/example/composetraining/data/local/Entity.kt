@@ -3,6 +3,7 @@ package com.example.composetraining.data.local
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.composetraining.di.AppModule_ProvideGetAllDisciplinesUseCaseFactory
 
 @Entity(tableName = "students")
 data class StudentEntity(
@@ -10,6 +11,7 @@ data class StudentEntity(
     val name: String,
     val surname: String,
     val pass: String,
+    val lastUpdatePass: Int = 0
 )
 
 @Entity(tableName = "discipline")
@@ -25,6 +27,15 @@ data class TransactionsEntity(
     val studentId: Long,
     val disciplineId: Long,
     val point: Int = 3
+)
+
+@Entity(tableName = "teachers")
+data class TeacherEntity(
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    val name: String,
+    val surname: String,
+    val pass: String,
+    val disciplineId: Long,
 )
 
 data class TransactionAnswer(

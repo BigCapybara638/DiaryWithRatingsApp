@@ -7,8 +7,8 @@ import androidx.room.RoomDatabase
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 @Database(
-    entities = [StudentEntity::class, DisciplineEntity::class, TransactionsEntity::class],
-    version = 2,
+    entities = [StudentEntity::class, DisciplineEntity::class, TransactionsEntity::class, TeacherEntity::class],
+    version = 3,
     exportSchema = false
 )
 abstract class MyDatabase : RoomDatabase() {
