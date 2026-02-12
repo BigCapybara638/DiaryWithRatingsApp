@@ -63,4 +63,8 @@ class DatabaseRepositoryImpl(
     ): Student? {
         return dao.getStudentByLoginAndPass(login, pass)?.toDomain()
     }
+
+    override suspend fun changePassForStudent(id: Int, pass: String) {
+        dao.changePassForStudent(id.toLong(), pass)
+    }
 }

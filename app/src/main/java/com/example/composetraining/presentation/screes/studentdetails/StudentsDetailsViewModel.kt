@@ -8,7 +8,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.composetraining.data.local.TransactionAnswer
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Transaction
-import com.example.composetraining.domain.usecases.AddMarkUseCase
+import com.example.composetraining.domain.usecases.add.AddMarkUseCase
+import com.example.composetraining.domain.usecases.ChangePassForStudentUseCase
 import com.example.composetraining.domain.usecases.GetMarksForStudentUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
 import com.example.composetraining.presentation.screes.home.DataState
@@ -24,7 +25,8 @@ import javax.inject.Inject
 class StudentsDetailsViewModel @Inject constructor(
     private val getStudentByIdUseCase: GetStudentByIdUseCase,
     private val addMarkUseCase: AddMarkUseCase,
-    private val getMarksForStudentUseCase: GetMarksForStudentUseCase
+    private val getMarksForStudentUseCase: GetMarksForStudentUseCase,
+    private val changePassForStudentUseCase: ChangePassForStudentUseCase
 ) : ViewModel() {
 
     private var _student = MutableStateFlow(Student(id = 1, name = "Имя", surname = "Фамилия", pass = "1234"))
@@ -59,9 +61,15 @@ class StudentsDetailsViewModel @Inject constructor(
         }
     }
 
+    fun changePassForStudent(id: Int, pass: String) {
+        viewModelScope.launch {
+            changePassForStudentUseCase(id, pass)
+        }
+    }
+
     fun addMark(transaction: Transaction) {
         viewModelScope.launch {
-            addMarkUseCase.invoke(transaction)
+            addMarkUseCase(transaction)
         }
     }
 

@@ -6,16 +6,16 @@ import androidx.lifecycle.viewModelScope
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Teacher
-import com.example.composetraining.domain.usecases.AddDisciplineUseCase
+import com.example.composetraining.domain.usecases.add.AddDisciplineUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.example.composetraining.domain.usecases.AddStudentUseCase
-import com.example.composetraining.domain.usecases.AddTeacherUseCase
-import com.example.composetraining.domain.usecases.GetAllDisciplinesUseCase
-import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
-import com.example.composetraining.domain.usecases.GetAllTeachersUseCase
+import com.example.composetraining.domain.usecases.add.AddStudentUseCase
+import com.example.composetraining.domain.usecases.add.AddTeacherUseCase
+import com.example.composetraining.domain.usecases.getAll.GetAllDisciplinesUseCase
+import com.example.composetraining.domain.usecases.getAll.GetAllStudentsUseCase
+import com.example.composetraining.domain.usecases.getAll.GetAllTeachersUseCase
 import kotlinx.coroutines.Dispatchers
 import javax.inject.Inject
 

@@ -1,5 +1,6 @@
 package com.example.composetraining.presentation.screes.studentdetails
 
+import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -39,16 +40,19 @@ import com.example.composetraining.presentation.screes.home.DataState
 import com.example.composetraining.presentation.screes.home.components.StudentBox
 import com.example.composetraining.presentation.screes.studentdetails.components.DisciplineItem
 import com.example.composetraining.presentation.screes.studentdetails.components.InputDisciplineDialog
+import com.example.composetraining.presentation.screes.studentdetails.components.InputPassDialog
 import com.example.composetraining.presentation.theme.ComposeTrainingTheme
 
 @Composable
 fun StudentDetailsScreen(
+    context: Context,
     itemId: Int?,
     viewModel: StudentsDetailsViewModel
 ) {
     ComposeTrainingTheme {
 
         var showDialog by remember { mutableStateOf(false) }
+        var showPassDialog by remember { mutableStateOf(false) }
 
         viewModel.loadStudent(itemId!!)
         viewModel.loadMarksForStudent(itemId)
@@ -92,9 +96,19 @@ fun StudentDetailsScreen(
                 onClick = {
                     showDialog = true
                 },
-                modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 20.dp)
+                modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 6.dp)
             ) {
                 Text(text = "Добавить оценку",
+                    fontSize = 18.sp)
+            }
+
+            Button(
+                onClick = {
+                    showPassDialog = true
+                },
+                modifier = Modifier.padding(10.dp, 0.dp, 0.dp, 20.dp)
+            ) {
+                Text(text = "Изменить пароль",
                     fontSize = 18.sp)
             }
 
@@ -128,6 +142,21 @@ fun StudentDetailsScreen(
                     viewModel.addMark(transaction)
                     showDialog = false
                     viewModel.loadMarksForStudent(student.toInt())
+                }
+            )
+        }
+
+        if (showPassDialog) {
+            InputPassDialog(
+                "Изменить пароль",
+                onDismiss = { showPassDialog = false },
+                onConfirm = { newPass, newPassRemember ->
+                    if (newPass == newPassRemember) {
+                        viewModel.changePassForStudent(student.value.id.toInt(), newPass)
+                        showPassDialog = false
+                    } else {
+                        Toast.makeText(context, "Пароли на совпадают", Toast.LENGTH_SHORT).show()
+                    }
                 }
             )
         }

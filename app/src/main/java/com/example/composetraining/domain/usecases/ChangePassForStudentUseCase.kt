@@ -1,16 +1,15 @@
 package com.example.composetraining.domain.usecases
 
-import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.repository.DatabaseRepository
 
-class AddStudentUseCase(
+class ChangePassForStudentUseCase(
     private val databaseRepository: DatabaseRepository
 ) {
 
     suspend operator fun invoke(
-        student: Student,
+        id: Int,
+        pass: String
     ) {
-        return databaseRepository.addStudent(student)
+        return databaseRepository.changePassForStudent(id, pass)
     }
-
 }

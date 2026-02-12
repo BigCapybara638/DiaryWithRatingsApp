@@ -31,4 +31,5 @@ interface DatabaseRepository {
 
     suspend fun getStudentByLoginAndPass(login: String, pass: String) : Student?
 
+    suspend fun changePassForStudent(id: Int, pass: String)
 }

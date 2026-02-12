@@ -1,17 +1,16 @@
-package com.example.composetraining.domain.usecases
+package com.example.composetraining.domain.usecases.add
 
-import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.repository.DatabaseRepository
 
-class AddDisciplineUseCase(
+class AddStudentUseCase(
     private val databaseRepository: DatabaseRepository
 ) {
 
     suspend operator fun invoke(
-        discipline: Discipline,
+        student: Student,
     ) {
-        return databaseRepository.addDiscipline(discipline)
+        return databaseRepository.addStudent(student)
     }
 
 }

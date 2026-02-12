@@ -1,4 +1,4 @@
-package com.example.composetraining.domain.usecases
+package com.example.composetraining.domain.usecases.add
 
 import com.example.composetraining.domain.models.Transaction
 import com.example.composetraining.domain.repository.DatabaseRepository

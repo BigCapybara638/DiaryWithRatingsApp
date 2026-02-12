@@ -4,12 +4,13 @@ import com.example.composetraining.data.local.MyDao
 import com.example.composetraining.data.local.MyDatabase
 import com.example.composetraining.data.repository.DatabaseRepositoryImpl
 import com.example.composetraining.domain.repository.DatabaseRepository
-import com.example.composetraining.domain.usecases.AddDisciplineUseCase
-import com.example.composetraining.domain.usecases.AddMarkUseCase
-import com.example.composetraining.domain.usecases.AddStudentUseCase
-import com.example.composetraining.domain.usecases.GetAllDisciplinesUseCase
-import com.example.composetraining.domain.usecases.GetAllStudentsUseCase
-import com.example.composetraining.domain.usecases.GetAllTeachersUseCase
+import com.example.composetraining.domain.usecases.add.AddDisciplineUseCase
+import com.example.composetraining.domain.usecases.add.AddMarkUseCase
+import com.example.composetraining.domain.usecases.add.AddStudentUseCase
+import com.example.composetraining.domain.usecases.ChangePassForStudentUseCase
+import com.example.composetraining.domain.usecases.getAll.GetAllDisciplinesUseCase
+import com.example.composetraining.domain.usecases.getAll.GetAllStudentsUseCase
+import com.example.composetraining.domain.usecases.getAll.GetAllTeachersUseCase
 import com.example.composetraining.domain.usecases.GetMarksForStudentUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
 import com.example.composetraining.domain.usecases.GetVerificationUserUseCase
@@ -108,6 +109,14 @@ object AppModule {
         repository: DatabaseRepository
     ) : GetVerificationUserUseCase {
         return GetVerificationUserUseCase(repository)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideChangePassForStudentUseCase(
+        repository: DatabaseRepository
+    ) : ChangePassForStudentUseCase {
+        return ChangePassForStudentUseCase(repository)
     }
 
 }

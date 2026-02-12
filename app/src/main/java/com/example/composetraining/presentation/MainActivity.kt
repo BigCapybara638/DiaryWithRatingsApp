@@ -82,6 +82,7 @@ fun Main(
             ) { backStackEntry ->
                 val itemId = backStackEntry.arguments?.getInt("itemId")
                 StudentDetailsScreen(
+                    context = context,
                     itemId = itemId,
                     viewModel = studentDetailsViewModel
                 )

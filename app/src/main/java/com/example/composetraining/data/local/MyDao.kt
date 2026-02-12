@@ -47,4 +47,7 @@ interface MyDao {
 
     @Query("SELECT * FROM students WHERE surname = :login AND pass = :pass LIMIT 1")
     suspend fun getStudentByLoginAndPass(login: String, pass: String) : StudentEntity?
+
+    @Query("UPDATE students SET pass = :pass WHERE id = :id")
+    suspend fun changePassForStudent(id: Long, pass: String)
 }

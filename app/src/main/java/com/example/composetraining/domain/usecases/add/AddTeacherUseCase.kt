@@ -1,6 +1,5 @@
-package com.example.composetraining.domain.usecases
+package com.example.composetraining.domain.usecases.add
 
-import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Teacher
 import com.example.composetraining.domain.repository.DatabaseRepository
 import javax.inject.Inject
