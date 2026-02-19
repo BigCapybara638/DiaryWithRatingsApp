@@ -3,6 +3,7 @@ package com.example.composetraining.presentation.screes.home
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.composetraining.data.repository.FirestoreRepositoryImpl
 import com.example.composetraining.domain.models.Discipline
 import com.example.composetraining.domain.models.Student
 import com.example.composetraining.domain.models.Teacher
@@ -28,6 +29,8 @@ class HomeViewModel @Inject constructor(
     private val getAllDisciplinesUseCase: GetAllDisciplinesUseCase,
     private val getAllTeachersUseCase: GetAllTeachersUseCase,
 ) : ViewModel() {
+
+    private val fire = FirestoreRepositoryImpl()
 
     private val _dataState = MutableStateFlow<DataState<List<Student>>>(DataState.Loading)
     val dataState: StateFlow<DataState<List<Student>>> = _dataState
@@ -91,7 +94,8 @@ class HomeViewModel @Inject constructor(
     fun addDiscipline(discipline: Discipline) {
         Log.e("tests", "addDiscipline")
         viewModelScope.launch {
-            addDisciplineUseCase.invoke(discipline)
+            //addDisciplineUseCase.invoke(discipline)
+            fire.addDiscipline(discipline)
         }
     }
 

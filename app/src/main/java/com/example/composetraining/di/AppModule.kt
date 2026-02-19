@@ -3,6 +3,7 @@ package com.example.composetraining.di
 import com.example.composetraining.data.local.MyDao
 import com.example.composetraining.data.local.MyDatabase
 import com.example.composetraining.data.repository.DatabaseRepositoryImpl
+import com.example.composetraining.data.repository.FirestoreRepositoryImpl
 import com.example.composetraining.domain.repository.DatabaseRepository
 import com.example.composetraining.domain.usecases.add.AddDisciplineUseCase
 import com.example.composetraining.domain.usecases.add.AddMarkUseCase
@@ -14,6 +15,7 @@ import com.example.composetraining.domain.usecases.getAll.GetAllTeachersUseCase
 import com.example.composetraining.domain.usecases.GetMarksForStudentUseCase
 import com.example.composetraining.domain.usecases.GetStudentByIdUseCase
 import com.example.composetraining.domain.usecases.GetVerificationUserUseCase
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,7 +37,8 @@ object AppModule {
     @ViewModelScoped
     fun provideDatabaseRepository(
         dao: MyDao
-    ) : DatabaseRepository {
+    )
+    : DatabaseRepository {
         return DatabaseRepositoryImpl(dao)
     }
 
